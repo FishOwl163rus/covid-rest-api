@@ -5,9 +5,11 @@ import dotenv from 'dotenv';
 import { logger, exceptionsHandler } from "./middleware";
 import morgan from "morgan";
 import 'reflect-metadata';
-import {cleanUpDatabase, loadCountriesAsync} from "./startup/startup";
+import {cleanUpDatabase, loadCountriesAsync, loadGlobalAsync} from "./startup/startup";
 import AppDataSource from "./common/appDataSource";
 import {countryRouter} from "./resources/country/country.router";
+import {globalRouter} from "./resources/global/global.router";
+import {covidRouter} from "./resources/covid/covid.router";
 
 AppDataSource.initialize()
     .then(() => logger.info("Data Source has been initialized!"))
@@ -33,7 +35,10 @@ app.use(morgan('[:date[Europe/Minsk]] :method :url :status :response-time ms :bo
 }));
 
 app.use(exceptionsHandler);
+
 app.use('/countries', countryRouter);
+app.use('/global', globalRouter)
+app.use('/covid', covidRouter)
 
 process.on('unhandledRejection', (error: Error) => logger.error(error));
 process.on('uncaughtException', (error: Error) => logger.error(error));
@@ -42,9 +47,10 @@ const startup = async () => {
   try {
     await cleanUpDatabase()
     await loadCountriesAsync()
+    await loadGlobalAsync()
     logger.info('Successfully loaded date.')
   } catch (err: any) {
-    logger.error('Failed to load data:' + err.message)
+    logger.error('Failed to load data: ' + err.message)
   }
 }
 

@@ -1,18 +1,21 @@
 import AppDataSource from "../../common/appDataSource";
 import {Country} from "./country.entity";
 import {InsertResult} from "typeorm";
-import {logger} from "../../middleware";
 
 export async function insertCountries(countries: Country[]): Promise<InsertResult> {
-    return AppDataSource.getRepository(Country)
-        .insert(countries)
-        .catch((reason: Error) => logger.error(reason));
+    try {
+        return await AppDataSource.getRepository(Country).insert(countries);
+    } catch (ex) {
+        return new InsertResult()
+    }
 }
 
-export async function getCountries(): Promise<Country[]> {
-    return AppDataSource.getRepository(Country)
-        .find()
-        .catch((reason: Error) => logger.error(reason));
+export async function getCountries(): Promise<Country[] | null> {
+    try {
+        return await AppDataSource.getRepository(Country).find();
+    } catch (ex) {
+        return null
+    }
 }
 
 export default {insertCountries, getCountries}
