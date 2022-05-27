@@ -10,6 +10,7 @@ import AppDataSource from "./common/appDataSource";
 import {countryRouter} from "./resources/country/country.router";
 import {globalRouter} from "./resources/global/global.router";
 import {covidRouter} from "./resources/covid/covid.router";
+import cors from 'cors'
 
 AppDataSource.initialize()
     .then(() => logger.info("Data Source has been initialized!"))
@@ -22,6 +23,7 @@ const app: express.Application = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use(cors())
 app.use('/', (req: Request, res: Response, next: NextFunction) => {
   if (req.originalUrl === '/') {
     res.send('Service is running!');

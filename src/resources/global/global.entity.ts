@@ -8,19 +8,19 @@ export class Global {
 
     @Expose({name: 'NewConfirmed'})
     @Column()
-    public new_confirmed: number;
+    public newConfirmed: number;
 
     @Expose({name: 'TotalConfirmed'})
     @Column()
-    public total_confirmed: number;
+    public totalConfirmed: number;
 
     @Expose({name: 'TotalDeaths'})
     @Column()
-    public total_deaths: number;
+    public totalDeaths: number;
 
     @Expose({name: 'NewDeaths'})
     @Column()
-    public new_deaths: number;
+    public newDeaths: number;
 
     @Expose({name: 'Date'})
     @Column()
