@@ -3,19 +3,25 @@ import {InsertResult} from "typeorm";
 import Covid from "./covid.entity";
 import {fetchCovidData} from "../axios/axios.api";
 
-export async function getCovidData(country: string, date: Date): Promise<Covid | null> {
+export async function getCovidData(country: string, date: Date): Promise<Covid[] | null> {
     try {
         let fixedTime = addHoursToDate(date, 3).toISOString();
-        let covid = await AppDataSource.getRepository(Covid).createQueryBuilder('co').where('co.date = :date', {date: fixedTime}).getOne()
-        if (covid) {
+        let covid = await AppDataSource
+        .getRepository(Covid)
+        .createQueryBuilder('co')
+        .where('co.date >= :date', {date: fixedTime})
+        .andWhere('co.countryCode = :country', {country: country})
+        .getMany()
+
+        if (covid.length > 0) {
             return covid
         } else {
-            let fetchedData = await fetchCovidData(country, date);
+            let fetchedData = await fetchCovidData(country);
             if (fetchedData.length === 0) {
                 return null
             } else {
                 await insertCovidData(fetchedData)
-                return null;
+                return await getCovidData(country, date)
             }
         }
 

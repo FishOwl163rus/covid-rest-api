@@ -16,9 +16,9 @@ router.route('/:country/:date').get(async (req: Request, res: Response) => {
 
 function checkDate(date: string | undefined): Date {
     if(date === undefined) {
-        return new Date(moment.utc(new Date().toUTCString()).tz("UTC").toISOString());
+        return new Date(moment.utc(new Date().toUTCString()).tz("Europe/Minsk").toISOString());
     } else {
-        return new Date(moment.utc(new Date(date).toUTCString()).tz("UTC").toISOString());
+        return new Date(moment.utc(new Date(date).toUTCString()).tz("Europe/Minsk").toISOString());
     }
 }
 export const covidRouter: Router = router;

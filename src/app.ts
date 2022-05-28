@@ -11,6 +11,7 @@ import {countryRouter} from "./resources/country/country.router";
 import {globalRouter} from "./resources/global/global.router";
 import {covidRouter} from "./resources/covid/covid.router";
 import cors from 'cors'
+import {userRouter} from "./resources/user/user.router";
 
 AppDataSource.initialize()
     .then(() => logger.info("Data Source has been initialized!"))
@@ -41,6 +42,7 @@ app.use(exceptionsHandler);
 app.use('/countries', countryRouter);
 app.use('/global', globalRouter)
 app.use('/covid', covidRouter)
+app.use('/user', userRouter)
 
 process.on('unhandledRejection', (error: Error) => logger.error(error));
 process.on('uncaughtException', (error: Error) => logger.error(error));

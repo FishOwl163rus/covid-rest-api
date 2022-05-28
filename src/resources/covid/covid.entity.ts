@@ -11,6 +11,10 @@ export class Covid {
     @Column()
     public country: string;
 
+    @Expose({name: 'CountryCode'})
+    @Column()
+    public countryCode: string;
+
     @Expose({name: 'Confirmed'})
     @Column()
     public confirmed: number;
